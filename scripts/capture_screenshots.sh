@@ -61,6 +61,17 @@ capture() {
   }
 }
 
+capture_viewport() {
+  local url="$1" out="$2" label="$3" width="$4" height="$5"
+  echo "[*] Warm-up (viewport) for $label"
+  "$CHROME_BIN" "${CHROME_ARGS[@]}" --window-size="${width},${height}" "$url" >/dev/null 2>&1 || true
+  sleep 2
+  echo "[+] Capturing viewport ${width}x${height}: $out"
+  "$CHROME_BIN" "${CHROME_ARGS[@]}" --window-size="${width},${height}" --screenshot="$out" "$url" >/dev/null 2>&1 || {
+    echo "Failed to capture $out"; return 1;
+  }
+}
+
 ensure_alerts
 
 # 1) Dashboard overview (last 1 hour)
@@ -82,5 +93,9 @@ capture "$URL3" "$OUT3" "Top source IPs (alerts)"
 URL4="http://localhost:5601/app/discover#/view/${DISCOVER_ALERTS_ID}?embed=true&kiosk=true&_g=(time:(from:now-1h,to:now))"
 OUT4="$OUT_DIR/discover_alerts.png"
 capture "$URL4" "$OUT4" "Discover alert details"
+
+# 5) Alerts over time close-up (viewport tuned to show top-left panel)
+OUT5="$OUT_DIR/alerts_over_time.png"
+capture_viewport "$URL2" "$OUT5" "Alerts over time close-up" 1024 640
 
 echo "Done. Screenshots saved under $OUT_DIR"
