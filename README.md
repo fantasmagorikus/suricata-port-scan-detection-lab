@@ -1,5 +1,9 @@
 # Port Scan Detection Lab — Suricata → Filebeat → Elasticsearch → Kibana
 
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
+[![Release](https://img.shields.io/github/v/release/fantasmagorikus/suricata-port-scan-detection-lab)](https://github.com/fantasmagorikus/suricata-port-scan-detection-lab/releases)
+[![Docs](https://img.shields.io/badge/docs-README-blue)](README.md)
+
 What I built
 - A containerized detection lab that identifies TCP SYN port scanning and visualizes results in Kibana.
 - Suricata rule engineering: baseline SYN (sid 9900001) and a scan-threshold rule (sid 9901001) with detection_filter.
@@ -63,14 +67,11 @@ Prerequisites: Linux with Docker + Docker Compose, `curl`, `jq`, and `nmap` for 
 cd homelab-security/suricata-elk-lab
 ```
 
-2) Choose your capture interface
-- Single-host demo (loopback):
+2) Prepare environment
+- Copy the example env and adjust interface if needed:
 ```
-echo 'SURICATA_IFACE=lo' > .env
-```
-- Network demo (Wi‑Fi/Ethernet): set to your host interface (e.g. `wlp3s0`)
-```
-echo 'SURICATA_IFACE=wlp3s0' > .env
+cp .env.example .env
+# default is SURICATA_IFACE=lo (single-host). For LAN, set SURICATA_IFACE to your NIC (e.g. wlp3s0)
 ```
 
 3) Start the stack
@@ -89,7 +90,7 @@ Artifacts are saved as `retomada_check-YYYY-MM-DD-HHMMSS.txt` and symlinked to `
 ```
 git clone <this repo>
 cd suricata-port-scan-detection-lab/homelab-security/suricata-elk-lab
-echo 'SURICATA_IFACE=lo' > .env
+cp .env.example .env
 docker compose up -d
 bash scripts/retomada_check.sh
 sudo nmap -sS -p 1-10000 127.0.0.1 -T4 --reason
@@ -174,6 +175,7 @@ Outputs under `backups/<timestamp>/` include snapshot response, Suricata logs (i
 - `filebeat/filebeat.yml` — module suricata → Elasticsearch
 - `scripts/` — backup, health check, export/rename helpers
 - `kibana_exports/` — saved objects export (.ndjson)
+- `Makefile` — common tasks: `make up|down|health|backup|export|screenshots`
 
 ## Screenshots
 

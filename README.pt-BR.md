@@ -1,5 +1,9 @@
 # Lab de Detecção de Varredura de Portas — Suricata → Filebeat → Elasticsearch → Kibana
 
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
+[![Release](https://img.shields.io/github/v/release/fantasmagorikus/suricata-port-scan-detection-lab)](https://github.com/fantasmagorikus/suricata-port-scan-detection-lab/releases)
+[![Docs](https://img.shields.io/badge/docs-README-blue)](README.pt-BR.md)
+
 O que eu construí
 - Um lab containerizado para detectar varreduras TCP SYN e visualizar no Kibana.
 - Engenharia de regras Suricata: regra básica de SYN (sid 9900001) e uma regra de threshold de scan (sid 9901001) com detection_filter.
@@ -63,14 +67,11 @@ Pré‑requisitos: Linux com Docker + Docker Compose, `curl`, `jq` e `nmap` para
 cd homelab-security/suricata-elk-lab
 ```
 
-2) Escolha a interface de captura
-- Demonstração numa única máquina (loopback):
+2) Preparar o ambiente
+- Copie o `.env.example` e ajuste a interface se necessário:
 ```
-echo 'SURICATA_IFACE=lo' > .env
-```
-- Demonstração em rede (Wi‑Fi/Ethernet): use a interface do host (ex.: `wlp3s0`)
-```
-echo 'SURICATA_IFACE=wlp3s0' > .env
+cp .env.example .env
+# padrão: SURICATA_IFACE=lo (uma máquina). Para LAN, ajuste para sua NIC (ex.: wlp3s0)
 ```
 
 3) Suba a stack
@@ -89,7 +90,7 @@ Os artefatos ficam como `retomada_check-YYYY-MM-DD-HHMMSS.txt` e symlink `retoma
 ```
 git clone <este repositório>
 cd suricata-port-scan-detection-lab/homelab-security/suricata-elk-lab
-echo 'SURICATA_IFACE=lo' > .env
+cp .env.example .env
 docker compose up -d
 bash scripts/retomada_check.sh
 sudo nmap -sS -p 1-10000 127.0.0.1 -T4 --reason
@@ -174,6 +175,7 @@ Saída em `backups/<timestamp>/`: resposta do snapshot, logs do Suricata (se hou
 - `filebeat/filebeat.yml` — módulo suricata → Elasticsearch
 - `scripts/` — backup, health check e export/rename
 - `kibana_exports/` — export de objetos salvos (.ndjson)
+- `Makefile` — tarefas comuns: `make up|down|health|backup|export|screenshots`
 
 ## Changelog
 
