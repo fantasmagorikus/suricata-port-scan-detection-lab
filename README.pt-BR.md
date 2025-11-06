@@ -1,5 +1,13 @@
 # Lab de Detecção de Varredura de Portas — Suricata → Filebeat → Elasticsearch → Kibana
 
+O que eu construí
+- Um lab containerizado para detectar varreduras TCP SYN e visualizar no Kibana.
+- Engenharia de regras Suricata: regra básica de SYN (sid 9900001) e uma regra de threshold de scan (sid 9901001) com detection_filter.
+- Pipeline EVE → ECS usando o módulo Suricata do Filebeat, gravando em data streams do Elasticsearch.
+- Dashboard no Kibana (“Port Scan Detection (Suricata)”) com Lens (alertas ao longo do tempo, top fontes/portas, faixas de portas, detalhes).
+- Scripts operacionais para health checks, exports reprodutíveis (NDJSON), snapshots/backups e captura de screenshots headless.
+- Modos de uma máquina e em rede via `.env` (`SURICATA_IFACE=lo` ou sua interface de rede).
+
 Detecte varreduras TCP SYN e visualize no Kibana Lens. Este lab usa Suricata para gerar EVE JSON, Filebeat (módulo suricata) para enviar dados ao Elasticsearch e um dashboard no Kibana para análise. Inclui o OWASP Juice Shop como alvo em `:3000`.
 
 ## Arquitetura e Justificativa
@@ -145,8 +153,11 @@ Saída em `backups/<timestamp>/`: resposta do snapshot, logs do Suricata (se hou
 - `scripts/` — backup, health check e export/rename
 - `kibana_exports/` — export de objetos salvos (.ndjson)
 
+## Changelog
+
+Veja CHANGELOG.md para o histórico versionado e destaques.
+
 ## Créditos
 
 - Suricata IDS, Elastic Beats, Elasticsearch, Kibana
 - OWASP Juice Shop
-

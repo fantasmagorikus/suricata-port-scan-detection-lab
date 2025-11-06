@@ -1,5 +1,13 @@
 # Port Scan Detection Lab — Suricata → Filebeat → Elasticsearch → Kibana
 
+What I built
+- A containerized detection lab that identifies TCP SYN port scanning and visualizes results in Kibana.
+- Suricata rule engineering: baseline SYN (sid 9900001) and a scan-threshold rule (sid 9901001) with detection_filter.
+- EVE → ECS pipeline using Filebeat’s Suricata module, landing in Elasticsearch data streams.
+- A Kibana dashboard (“Port Scan Detection (Suricata)”) with Lens panels (alerts over time, top sources/ports, port ranges, details).
+- Operational scripts for health checks, reproducible exports (NDJSON), snapshots/backups, and headless screenshot capture.
+- Single-host and network modes via `.env` (`SURICATA_IFACE=lo` or your NIC).
+
 Detect TCP SYN port scans and visualize them with Kibana Lens. This lab uses Suricata to generate EVE JSON, Filebeat (suricata module) to ship data into Elasticsearch, and a Kibana dashboard to analyze and present results. An OWASP Juice Shop service is included as a convenient target on port 3000.
 
 ## Architecture and Rationale
@@ -154,6 +162,10 @@ Dashboard overview (last 15 minutes):
 Recent activity (last 5 minutes):
 
 ![Dashboard Last 5m](docs/screenshots/dashboard_overview_last5.png)
+
+## Changelog
+
+See CHANGELOG.md for versioned history and highlights.
 
 ## Acknowledgements
 
