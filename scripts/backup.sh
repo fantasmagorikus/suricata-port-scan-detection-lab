@@ -46,7 +46,7 @@ mkdir -p "$STAGE_DIR"
 # Copy only the needed project files (avoid unreadable defaults under suricata/)
 cp -a "$LAB_DIR/docker-compose.yml" "$STAGE_DIR/" || true
 [ -f "$LAB_DIR/.env" ] && cp -a "$LAB_DIR/.env" "$STAGE_DIR/" || true
-[ -f "$LAB_DIR/agent.md" ] && cp -a "$LAB_DIR/agent.md" "$STAGE_DIR/" || true
+[ -f "$LAB_DIR/agent.md" ] && echo "(skipping legacy agent.md)" >/dev/null || true
 [ -f "$LAB_DIR/README.md" ] && cp -a "$LAB_DIR/README.md" "$STAGE_DIR/" || true
 [ -d "$LAB_DIR/scripts" ] && cp -a "$LAB_DIR/scripts" "$STAGE_DIR/" || true
 mkdir -p "$STAGE_DIR/filebeat" "$STAGE_DIR/local-rules" "$STAGE_DIR/suricata"

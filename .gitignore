@@ -3,6 +3,10 @@ backups/
 retomada_check-*.txt
 retomada_check-latest.txt
 
+# Keep internal session notes private
+AGENTS.md
+agent.md
+
 # Suricata default configs (some files may be unreadable inside container volume)
 suricata/*
 !suricata/suricata.yaml
