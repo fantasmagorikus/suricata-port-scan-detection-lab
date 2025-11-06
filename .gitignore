@@ -3,6 +3,11 @@ backups/
 retomada_check-*.txt
 retomada_check-latest.txt
 
+# Environment (do not commit real env)
+.env
+.env.*
+!.env.example
+
 # Keep internal session notes private
 AGENTS.md
 agent.md
