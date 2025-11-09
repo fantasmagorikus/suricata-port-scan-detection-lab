@@ -7,6 +7,8 @@
 
 Modern, reproducible lab to detect TCP SYN port scanning with Suricata, ship events via Filebeat to Elasticsearch, and visualize everything inside Kibana Lens. Includes local detection rules, Saved Objects export (NDJSON), health/backup/export/screenshot scripts, and bilingual docs.
 
+> 🇧🇷 Leia este conteúdo em português: [README.pt-BR.md](README.pt-BR.md)
+
 ![Dashboard Overview](docs/screenshots/dashboard_overview.png)
 
 ## Contents
@@ -38,15 +40,20 @@ Modern, reproducible lab to detect TCP SYN port scanning with Suricata, ship eve
 - Operational scripts cover health checks, snapshots/backups, screenshot capture, and NDJSON exports for portability.
 - `.env` toggles single-host (`lo`) and LAN interfaces; OWASP Juice Shop (3000/tcp) provides deterministic traffic.
 
-Detect TCP SYN port scans, correlate them with Juice Shop traffic, and present the story in Kibana Lens. This mirrors the documentation style of the Pentest Lab to keep both repos uniform.
+Detect TCP SYN port scans, correlate them with Juice Shop traffic, and present the story in Kibana Lens. This mirrors the documentation style of the [Pentest Lab](https://github.com/fantasmagorikus/pentest-lab) to keep both repos uniform.
 
 ## Architecture & Flow
 
-```mermaid
-flowchart LR
-  A[Suricata (EVE.json)] -->|Filebeat Suricata module| B[Elasticsearch]
-  B --> C[Kibana]
-  A <--> D[Local Rules\n9900001 / 9901001]
+```
+┌──────────────────────────────┐           ┌────────────────────────────┐
+│ Suricata (EVE JSON)          │           │ Filebeat Suricata module   │
+│ network_mode: host           │──────────▶│ ECS data streams / ES      │
+│ Local rules 9900001 / 9901001│ alerts    └────────────┬────────────────┘
+└─────────────┬────────────────┘                        │
+              │ HTTP / ECS                              ▼
+      ┌───────────────┐                          ┌───────────────┐
+      │ Juice Shop    │◀───────────── traffic ──▶│ Kibana Lens   │
+      └───────────────┘                          └───────────────┘
 ```
 
 - Suricata: mature IDS that emits structured EVE JSON (alerts, flows, stats)
@@ -159,7 +166,7 @@ suricata.eve.alert.signature_id: 9901001
 
 - Kibana captures live under `docs/screenshots/` (PNG) and can be regenerated via `make screenshots`.
 - `scripts/capture_screenshots.sh` stores raw PNGs in `docs/screenshots/` for README embedding and interviews.
-- Combine with Pentest Lab evidence to tell the offensive + defensive story (e.g., Suricata alert screenshot mirrors ZAP findings).
+- Combine with [Pentest Lab](https://github.com/fantasmagorikus/pentest-lab) evidence to tell the offensive + defensive story (e.g., Suricata alert screenshot mirrors ZAP findings).
 
 ## Exports (NDJSON) & Reproducibility
 

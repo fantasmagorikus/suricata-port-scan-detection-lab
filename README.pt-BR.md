@@ -7,6 +7,8 @@
 
 Lab reprodutível para detectar varreduras TCP SYN com Suricata, enviar eventos via Filebeat para Elasticsearch e visualizar no Kibana Lens. Inclui regras locais, export de objetos do Kibana (NDJSON), scripts de health/backup/export/screenshots e documentação bilíngue.
 
+> 🇺🇸 Leia este conteúdo em inglês: [README.md](README.md)
+
 ![Visão Geral do Dashboard](docs/screenshots/dashboard_overview.png)
 
 ## Conteúdo
@@ -38,15 +40,20 @@ Lab reprodutível para detectar varreduras TCP SYN com Suricata, enviar eventos 
 - Scripts para health check, snapshots/backup, export NDJSON, captura headless de screenshots e publicação em GitHub.
 - `.env` alterna entre single-host (`lo`) e interface LAN; OWASP Juice Shop (porta 3000) fornece tráfego previsível.
 
-Conte a mesma história ofensiva + defensiva do Pentest Lab: Suricata detecta o Nmap enquanto a pipeline de evidências mostra os alertas no Kibana.
+Conte a mesma história ofensiva + defensiva do [Pentest Lab](https://github.com/fantasmagorikus/pentest-lab): Suricata detecta o Nmap enquanto a pipeline de evidências mostra os alertas no Kibana.
 
 ## Arquitetura e Justificativa
 
-```mermaid
-flowchart LR
-  A[Suricata (EVE.json)] -->|Módulo Suricata do Filebeat| B[Elasticsearch]
-  B --> C[Kibana]
-  A <--> D[Regras Locais\n9900001 / 9901001]
+```
+┌──────────────────────────────┐           ┌────────────────────────────┐
+│ Suricata (EVE JSON)          │           │ Módulo Suricata do Filebeat│
+│ network_mode: host           │──────────▶│ Data streams no ES         │
+│ Regras locais 9900001/9901001│ alerts    └────────────┬────────────────┘
+└─────────────┬────────────────┘                        │
+              │ HTTP / ECS                              ▼
+      ┌───────────────┐                          ┌───────────────┐
+      │ Juice Shop    │◀───────────── tráfego ─▶│ Kibana Lens   │
+      └───────────────┘                          └───────────────┘
 ```
 
 - Suricata: IDS maduro que emite EVE JSON estruturado (alertas, flows, stats)
@@ -156,7 +163,7 @@ suricata.eve.alert.signature_id: 9901001
 ## Evidências & screenshots
 - PNGs do Kibana ficam em `docs/screenshots/` (regerar com `make screenshots`).
 - `scripts/capture_screenshots.sh` salva versões prontas para usar em README ou entrevista.
-- Combine com as evidências do Pentest Lab para mostrar a narrativa ofensiva + defensiva.
+- Combine com as evidências do [Pentest Lab](https://github.com/fantasmagorikus/pentest-lab) para mostrar a narrativa ofensiva + defensiva.
 
 ## Exports (NDJSON) & reprodutibilidade
 
