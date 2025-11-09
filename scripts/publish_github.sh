@@ -10,7 +10,7 @@ set -euo pipefail
 #   bash scripts/publish_github.sh [repo-name]
 #
 
-REPO_NAME="${1:-suricata-port-scan-detection-lab}"
+REPO_NAME="${1:-portscan-detection-lab}"
 DESC="Detect TCP SYN port scanning with Suricata → Filebeat → Elasticsearch → Kibana. Includes local rules, Kibana dashboard (NDJSON export), and backup scripts."
 
 cd "$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
@@ -62,4 +62,3 @@ if [ -n "$NAME_WITH_OWNER" ]; then
 fi
 
 echo "==> Done. If any step failed due to auth, run: gh auth login -h github.com -p ssh --web, then rerun this script."
-

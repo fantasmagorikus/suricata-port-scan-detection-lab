@@ -1,7 +1,5 @@
 # Port Scan Detection Lab — Suricata → Filebeat → Elasticsearch → Kibana
 
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
-[![Release](https://img.shields.io/github/v/release/fantasmagorikus/suricata-port-scan-detection-lab)](https://github.com/fantasmagorikus/suricata-port-scan-detection-lab/releases)
 [![Docs (EN)](https://img.shields.io/badge/docs-EN-blue)](README.md)
 [![Docs (pt‑BR)](https://img.shields.io/badge/docs-pt%E2%80%91BR-blue)](README.pt-BR.md)
 
