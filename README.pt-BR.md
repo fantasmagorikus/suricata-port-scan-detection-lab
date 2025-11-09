@@ -7,7 +7,7 @@
 
 Lab reprodutível para detectar varreduras TCP SYN com Suricata, enviar eventos via Filebeat para Elasticsearch e visualizar no Kibana Lens. Inclui regras locais, export de objetos do Kibana (NDJSON), scripts de health/backup/export/screenshots e documentação bilíngue.
 
-> 🇺🇸 Leia este conteúdo em inglês: [README.md](README.md)
+> 🇺🇸 English-first docs: veja [README.md](README.md)
 
 ![Visão Geral do Dashboard](docs/screenshots/dashboard_overview.png)
 
